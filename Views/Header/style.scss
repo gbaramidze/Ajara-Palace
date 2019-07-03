@@ -1,0 +1,18 @@
+.navBar {
+  background: #730000;
+  border-top: 3px solid #ad3333;
+  box-shadow: 2px 1px 1px #484848bd;
+}
+
+.navBar a{
+  color: #c38f14fc !important;
+  text-shadow: 0 1px 0 #753c3c;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 17px;
+  transition: ease-in-out 150ms;
+}
+
+.navBar .nav-link.active {
+  color: #fff !important;
+}

@@ -1,0 +1,59 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js start
+
+PATH: 
+  C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Docker\Docker\Resources\bin;C:\Users\gbaramid\Downloads\openjdk-11_windows-x64_bin\jdk-11\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\WebEx\Productivity Tools;C:\Program Files\Git\cmd;C:\HashiCorp\Vagrant\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Sennheiser\SoftphoneSDK\;C:\Users\gbaramid\Downloads\apache-maven-3.6.0-bin\apache-maven-3.6.0\bin;C:\Program Files\nodejs\;C:\xampp2\php;C:\ProgramData\ComposerSetup\bin;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Yarn\bin\;C:\Users\gbaramid\.windows-build-tools\python27;C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\gbaramid\AppData\Roaming\npm\node_modules\windows-build-tools\node_modules\.bin;C:\Users\gbaramid\AppData\Roaming\npm\node_modules\.bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Docker\Docker\Resources\bin;C:\Users\gbaramid\Downloads\openjdk-11_windows-x64_bin\jdk-11\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\WebEx\Productivity Tools;C:\Program Files\Git\cmd;C:\HashiCorp\Vagrant\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Sennheiser\SoftphoneSDK\;C:\Users\gbaramid\Downloads\apache-maven-3.6.0-bin\apache-maven-3.6.0\bin;C:\Program Files\nodejs\;C:\Users\gbaramid\AppData\Local\Microsoft\WindowsApps;C:\Users\gbaramid\AppData\Roaming\npm;C:\Users\gbaramid\AppData\Roaming\Composer\vendor\bin;C:\Program Files\Gradle\bin;C:\Users\gbaramid\AppData\Local\Yarn\bin
+
+Yarn version: 
+  1.16.0
+
+Node version: 
+  10.15.3
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\gbaramid\Desktop\CMS\package.json: Unexpected token } in JSON at position 381
+      at JSON.parse (<anonymous>)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Program Files (x86)\Yarn\lib\cli.js:304:30)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:315:13
+
+npm manifest: 
+  {
+    "name": "cms",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "start": "webpack-dev-server --mode development --open --hot",
+      "build": "webpack --mode production",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "react": "^16.8.6",
+      "react-dom": "^16.8.6",
+    },
+    "devDependencies": {
+      "@babel/core": "^7.4.5",
+      "@babel/preset-env": "^7.4.5",
+      "@babel/preset-react": "^7.0.0",
+      "webpack-cli": "^3.3.4",
+      "webpack-dev-server": "^3.7.2",
+      "babel-loader": "^8.0.6",
+      "css-loader": "^3.0.0",
+      "html-webpack-plugin": "^3.2.0",
+      "style-loader": "^0.23.1",
+      "webpack": "^4.35.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

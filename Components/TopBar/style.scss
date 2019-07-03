@@ -1,0 +1,58 @@
+.wrapper {
+  background: #ad3333;
+  color: #dddddd;
+  padding-bottom: 4px;
+}
+.wrapper a {
+  color: #bfbfbf;
+  margin-right: 3px;
+  display: inline-block;
+}
+.topBar {
+  height: 28px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: space-between;
+}
+
+.list {
+  display: flex;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  li {
+    list-style: none;
+    margin-right: 25px;
+    svg  {
+      margin-right: 5px;
+    }
+  }
+}
+
+.social {
+  list-style: none;
+  vertical-align: middle;
+  margin-bottom: 0;
+  li a {
+    font-size: 18px;
+    padding: 5px 10px;
+  }
+
+  li a {
+    transition: ease-in-out 300ms;
+  }
+
+  li a:hover {
+    background: #ddd;
+    .facebook {
+      color: #3b5998;
+    }
+    .maps {
+      color: #983535;
+    }
+  }
+
+
+}
