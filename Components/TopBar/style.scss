@@ -1,3 +1,5 @@
+@import "../../Configs/css/variables";
+
 .wrapper {
   background: #ad3333;
   color: #dddddd;
@@ -35,9 +37,11 @@
   list-style: none;
   vertical-align: middle;
   margin-bottom: 0;
-  li a {
+  display: flex;
+  li > a, li > div > a {
     font-size: 18px;
     padding: 5px 10px;
+    margin-top: 2px;
   }
 
   li a {
@@ -45,14 +49,42 @@
   }
 
   li a:hover {
-    background: #ddd;
+    background: #3333;
+    border-radius: 5px;
     .facebook {
       color: #3b5998;
     }
     .maps {
-      color: #983535;
+      color: #989894;
     }
   }
+}
 
+.languageSelector {
+  z-index: 1021;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  margin-top: -3px;
+  a {
+    font-size: 14px;
+    color: #333
+  }
+  a:focus {
+    color: #b13131
+  }
+  a.active {
+    background: $brand;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  a.active:hover {
+    background-color: $brand;
+  }
+}
 
+@media screen and (max-width: 768px) {
+  .list li:nth-child(n+2) {
+    display: none;
+  }
 }

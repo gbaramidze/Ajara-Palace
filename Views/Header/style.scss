@@ -1,18 +1,42 @@
 .navBar {
   background: #730000;
   border-top: 3px solid #ad3333;
-  box-shadow: 2px 1px 1px #484848bd;
+  box-shadow: 2px 1px 1px rgba(101, 7, 12, 0.74)
 }
 
-.navBar a{
-  color: #c38f14fc !important;
+.navBar div > a{
   text-shadow: 0 1px 0 #753c3c;
   text-transform: uppercase;
   font-weight: 400;
   font-size: 17px;
   transition: ease-in-out 150ms;
+  padding: .5rem;
+  color: #ffffff80;
+  text-decoration: none
+}
+.navBar div > a:hover{
+  color: rgba(255, 255, 255, 0.79);
 }
 
-.navBar .nav-link.active {
-  color: #fff !important;
+.navBar .nav-item a.active{
+  color: #fff;
+}
+
+.georgian {
+  font-family: "ALK Sanet",sans-serif;
+}
+
+.navigation {
+  font-family: 'Roboto', sans-serif;
+}
+
+@media screen and (max-width: 768px){
+  .navbar-nav div > a{
+    border-top: 1px solid #5d0a0a;
+    width: 100%;
+    display: block;
+  }
+  .navbar-nav div:last-child > a {
+    border-bottom: 1px solid #5d0a0a;
+  }
 }

@@ -1,7 +1,36 @@
+@import "./Configs/css/variables";
+@import "assets/css/bootstrap.min.css";
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap');
+
+html,body {
+    height: 100%;
+}
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
 .phx-js-view {
     width: 100%;
     border: 1px solid #b56666;
     text-align: center;
     flex-direction: row;
     align-self: center;
+}
+
+@font-face {
+    font-family: 'ALK Sanet';
+    src: url('./assets/fonts/alk-sanet-webfont.eot'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/alk-sanet-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('./assets/fonts/alk-sanet-webfont.woff2') format('woff2'), /* Super Modern Browsers */
+    url('./assets/fonts/alk-sanet-webfont.woff') format('woff'), /* Pretty Modern Browsers */
+    url('./assets/fonts/alk-sanet-webfont.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('./assets/fonts/alk-sanet-webfont.svg#alk_sanetregular') format('svg'); /* Legacy iOS */
+}
+
+a {
+  color: $brand
+}
+a:hover {
+  color: $secondary
 }

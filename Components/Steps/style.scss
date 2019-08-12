@@ -1,0 +1,130 @@
+@import "../../Configs/css/variables";
+
+.stepWrapper {
+  overflow: auto;
+  margin-bottom: 15px;
+  padding: 15px;
+  text-align: center;
+}
+.ui.steps {
+  display: inline-flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  margin: 1em 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  line-height: 1.14285714em;
+  border-radius: .28571429rem;
+  border: 1px solid #22242626;
+}
+.ui.steps:last-child {
+  margin-bottom: 0;
+}
+.ui.steps:first-child {
+  margin-top: 0;
+}
+
+
+.step {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  vertical-align: middle;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 0;
+  padding: 10px 2em;
+  background: #fff;
+  color: #000000de;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 0;
+  border: none;
+  border-right: 1px solid #22242626;
+  -webkit-transition: background-color .1s ease,opacity .1s ease,color .1s ease,-webkit-box-shadow .1s ease;
+  transition: background-color .1s ease,opacity .1s ease,color .1s ease,box-shadow .1s ease,-webkit-box-shadow .1s ease;
+}
+.step:before {
+  position: absolute;
+  z-index: 2;
+  content: '';
+  top: 50%;
+  right: 0;
+  background-color: #fff;
+  width: 1.14285714em;
+  height: 1.14285714em;
+  border-style: solid;
+  border-color: #22242626;
+  border-width: 0 1px 1px 0;
+  -webkit-transition: background-color .1s ease,opacity .1s ease,color .1s ease,-webkit-box-shadow .1s ease;
+  transition: background-color .1s ease,opacity .1s ease,color .1s ease,box-shadow .1s ease,-webkit-box-shadow .1s ease;
+  -webkit-transform: translateY(-50%) translateX(50%) rotate(-45deg);
+  transform: translateY(-50%) translateX(50%) rotate(-45deg);
+}
+.step.active:before {
+  background: #f3f4f5;
+}
+.step.disabled:before {
+  background: #fff;
+}
+.step:last-child:before {
+  display: none;
+}
+
+.step.active {
+  cursor: auto;
+  background: #f3f4f5;
+}
+
+.disabled.step {
+  cursor: auto;
+  background: #fff;
+  pointer-events: none;
+}
+.icon {
+  font-size: 35px;
+  margin: 0 15px 0 0
+}
+.stepTitle {
+  color: #333;
+  display: block;
+  font-weight: 500;
+}
+.stepSubTitle {
+  display: block;
+  color: #333;
+  font-size: 12px;
+}
+
+.active {
+  .stepTitle {
+    color: $brand;
+  }
+  .stepSubTitle {
+    color: #333;
+  }
+}
+.disabled {
+  .stepTitle, .stepSubTitle {
+    color: #2828284d;
+  }
+}

@@ -1,0 +1,25 @@
+.subheader {
+  height: 300px;
+  width: 100%;
+  background-size: cover;
+  position: relative;
+  display: block;
+}
+.subheaderTitle {
+  color: #fff;
+  display: block;
+  font-family: 'Roboto',sans-serif;
+  font-size: 50px;
+  line-height:300px;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .subheader {
+    height: 140px;
+  }
+  .subheaderTitle {
+    line-height: 140px;
+    font-size: 30px;
+  }
+}

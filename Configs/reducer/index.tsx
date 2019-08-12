@@ -13,10 +13,15 @@ const locales = {
 };
 
 const locale = new LocalizedStrings(locales);
+locale.setLanguage('ka');
 
 const initialState = {
     locale,
-    language: 'en'
+    language: 'ka',
+    loading: false,
+    rooms: [],
+    categories: [],
+    order: []
 };
 
 export default function reducer(state = initialState, action) {
@@ -28,5 +33,29 @@ export default function reducer(state = initialState, action) {
             locale
         }
     }
+    if(action.type === 'loading') {
+        return {
+            ...state, loading: action.payload.loading,
+        }
+    }
+
+    if(action.type === 'rooms') {
+        return {
+            ...state, rooms: action.payload.rooms,
+        }
+    }
+
+    if(action.type === 'categories') {
+        return {
+            ...state, categories: action.payload.categories,
+        }
+    }
+
+    if(action.type === 'order') {
+        return {
+            ...state, order: action.payload.order,
+        }
+    }
+
     return state
 }

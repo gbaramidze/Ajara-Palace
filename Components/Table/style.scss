@@ -1,0 +1,26 @@
+.rtable {
+  position: absolute;
+  top: 260px;
+  opacity: 0.9;
+  text-align: center;
+  line-height: 70px;
+  cursor: pointer;
+}
+.rtable.horizontal {
+  width: 131px;
+  height: 124px;
+  line-height: 120px;
+  background: url(../../assets/images/tables/horizontal_free.png) no-repeat;
+}
+.rtable.vertical {
+  width: 122px;
+  height: 129px;
+  line-height: 125px;
+  background: url(../../assets/images/tables/vertical_free.png) no-repeat;
+}
+.rtable.vertical {
+  width: 122px;
+  height: 129px;
+  line-height: 125px;
+  background: url(../../assets/images/tables/vertical_free.png) no-repeat;
+}

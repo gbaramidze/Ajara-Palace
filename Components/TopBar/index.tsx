@@ -1,23 +1,24 @@
 import * as React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faClock, faMapMarkerAlt, faPhone} from "@fortawesome/free-solid-svg-icons";
+import {faClock, faGlobe, faMapMarkerAlt, faPhone} from "@fortawesome/free-solid-svg-icons";
 import {faFacebookF} from "@fortawesome/free-brands-svg-icons";
 import {connect} from 'react-redux';
-import {Container} from "react-bootstrap";
+import {Container, Dropdown} from "react-bootstrap";
 import iLocale from "../../Configs/locale/interface/iLocale";
 const style = require('./style.scss');
 
 const props = function(state) {
     return {
         locale: state.locale,
-        language: state.language
+        language: state.language,
     }
 };
 
 
 interface Props {
     dispatch: any,
-    locale: iLocale
+    locale: iLocale,
+    language: string,
 }
 
 
@@ -36,15 +37,13 @@ class TopBar extends React.Component {
                 language: lang
             }
         };
-        const {
-            dispatch,
-            locale
-        } = this.props;
+        const {dispatch} = this.props;
         dispatch(action);
     };
 
     render(): React.ReactElement {
-        const {maps, facebook} = this.state;
+        const { maps, facebook } = this.state;
+        const { language } = this.props;
         return (
             <div className={style.wrapper}>
                 <Container>
@@ -59,16 +58,27 @@ class TopBar extends React.Component {
                         </ul>
                         <ul className={`justify-content-end ${style.social}`}>
                             <li>
-                                <a href='#' onClick={()=> this.changeLanguage('ru')}>ru</a>
-                                <a href='#' onClick={()=> this.changeLanguage('en')}>en</a>
-                                <a href='#' onClick={()=> this.changeLanguage('ka')}>ka</a>
                                 <a href={facebook} target="_blank" rel="noreferrer noopener">
                                     <FontAwesomeIcon icon={faFacebookF} title={"facebook"} className={style.facebook}/>
                                 </a>
+                            </li>
+                            <li>
                                 <a href={maps} target="_blank" rel="noreferrer noopener">
                                     <FontAwesomeIcon icon={faMapMarkerAlt} title={"view on Google maps"}
                                                      className={style.maps}/>
                                 </a>
+                            </li>
+                            <li>
+                                <Dropdown alignRight>
+                                    <Dropdown.Toggle as="a" id="dropdown-basic" varian="success">
+                                        <FontAwesomeIcon icon={faGlobe} />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu className={style.languageSelector}>
+                                        <Dropdown.Item onClick={()=> this.changeLanguage('ka')} className={language === 'ka' ? 'active' : ''}>ქართული</Dropdown.Item>
+                                        <Dropdown.Item onClick={()=> this.changeLanguage('ru')} className={language === 'ru' ? 'active' : ''}>Русский</Dropdown.Item>
+                                        <Dropdown.Item onClick={()=> this.changeLanguage('en')} className={language === 'en' ? 'active' : ''}>English</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
                             </li>
                         </ul>
                     </div>

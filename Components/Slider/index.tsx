@@ -12,7 +12,7 @@ const images = [
 
 export default class s extends React.Component {
     render(): React.ReactElement {
-        var settings = {
+        const settings = {
             dots: true,
             infinite: true,
             speed: 500,
