@@ -8,6 +8,8 @@ import Button from "react-bootstrap/Button";
 import Counter from "../Counter";
 import Scrollspy from 'react-scrollspy'
 import Slider from "react-slick";
+import LazyLoad from 'react-lazyload';
+import {ReactNode} from "react";
 
 const style = require("./style.scss");
 
@@ -32,6 +34,9 @@ interface Meal {
     count: number
     total: number
 }
+
+const bgs = ['a','b','c','d','e','f'];
+let num = 0;
 
 class MenuPicker extends React.Component {
     delay;
@@ -72,12 +77,11 @@ class MenuPicker extends React.Component {
     private handleScroll() : void {
         if(this.delay) clearTimeout(this.delay);
         this.delay = setTimeout(() => {
-
             this.setState({
                 // @ts-ignore
                 stuck: window.outerHeight - 205 - document.querySelector('.cart').getBoundingClientRect().top
             })
-        }, 100)
+        }, 250)
     }
 
     private getCount(id: number): number {
@@ -171,7 +175,7 @@ class MenuPicker extends React.Component {
     }
 
     private grandTotal(): void {
-        const { order} = this.props;
+        const { order } = this.props;
         const { newPrice } = this.state;
         let total = 0;
         order.forEach(item=> {
@@ -193,7 +197,7 @@ class MenuPicker extends React.Component {
             this.setState({
                 slideIndex: index
             },()=> {
-                this.slider.slickGoTo(index)
+                this.slider.slickGoTo(index);
                 this.setState({
                     unScroll: true
                 })
@@ -202,11 +206,11 @@ class MenuPicker extends React.Component {
 
     }
 
-    private getElementY(query) {
+    private getElementY(query): number {
         return window.pageYOffset + document.querySelector(query).getBoundingClientRect().top
     }
 
-    doScrolling(e) {
+    doScrolling(e): void {
         e.preventDefault();
     }
 
@@ -242,8 +246,6 @@ class MenuPicker extends React.Component {
         })
     }
 
-
-
     static easeInOutQuad(t, b, c, d): number {
         t /= d/2;
         if (t < 1) return c/2*t*t + b;
@@ -255,9 +257,16 @@ class MenuPicker extends React.Component {
         return encodeURI(str.split(" ").join('-').toLowerCase())
     }
 
+    private getSpinner = (): ReactNode  =>{
+        num++;
+        if(num === bgs.length) num = 0;
+        const bg = bgs[num];
+        return <div className={style.menuBgWrapper}><div className={`${style.menuBg} ${bg}`}/></div>
+    };
+
     public render(): React.ReactElement {
         const { oldPrice, newPrice, lastEdit, showMobile,stuck}=this.state;
-        const {language,order, locale} = this.props;
+        const {language, order, locale} = this.props;
         const kitchen = this.kitchen();
         const bar = this.bar();
         const categories = [
@@ -279,7 +288,7 @@ class MenuPicker extends React.Component {
 
 
 
-        const SlickArrowLeft = ({ currentSlide, slideCount, ...props }): React.ReactElement => (
+        const SlickArrowLeft = ({ currentSlide, slideCount, ...props }: any): React.ReactElement => (
             <span
                 {...props}
                 className={
@@ -293,7 +302,7 @@ class MenuPicker extends React.Component {
             </span>
         );
 
-        const SlickArrowRight = ({ currentSlide, slideCount, ...props }): React.ReactElement => (
+        const SlickArrowRight = ({ currentSlide, slideCount, ...props }: any): React.ReactElement => (
             <span
                 {...props}
                 className={
@@ -308,6 +317,7 @@ class MenuPicker extends React.Component {
         );
 
 
+
         const settings = {
             className: "active",
             dots: false,
@@ -318,11 +328,11 @@ class MenuPicker extends React.Component {
             variableWidth: true,
             nextArrow: <SlickArrowRight/>,
             prevArrow: <SlickArrowLeft/>,
-            afterChange: ()=> {
+            "afterChange": ()=> {
                 this.startScroll(document.querySelector('.slick-active'));
-
             }
         };
+
         return <>
             <Tab.Container>
                 <div className={style.stickyNav}>
@@ -391,8 +401,9 @@ class MenuPicker extends React.Component {
                                                                                 </div>
                                                                             </header>
                                                                             <div className={style.thumbWrapper}>
-                                                                                <div className={style.thumb}
-                                                                                     style={{background: `url(${item.thumb})`}}/>
+                                                                                <LazyLoad height={140} debounce={100} placeholder={this.getSpinner()}>
+                                                                                        <div className={style.thumb} style={{background: `url(${item.thumb})`}}/>
+                                                                                </LazyLoad>
                                                                             </div>
                                                                         </div>
                                                                     </Col>
@@ -402,9 +413,7 @@ class MenuPicker extends React.Component {
                                                     </div>
                                                 }
                                             )
-
                                         }
-
                                     </React.Fragment>
                     )}
                             </div>
@@ -445,14 +454,14 @@ class MenuPicker extends React.Component {
                                         {locale.RESERVATION.FEE} {(newPrice * 10 / 100).toFixed(2)} ₾
                                     </li>
                                 </ul>
-
-
                             </div>
 
                             <div className={style.total}>
+
                                 <div className={style.totalMessage}>
                                     {locale.RESERVATION.TOTAL}
                                 </div>
+
                                 <CountUp
                                     start={oldPrice * 1.1}
                                     end={newPrice * 1.1}
@@ -463,16 +472,18 @@ class MenuPicker extends React.Component {
                                     suffix=" ₾"
                                     className={style.totalNumber}
                                 />
+
                             </div>
+
                             <div className={style.btns}>
-                                <Button type={"button"} variant={"danger"} block className={style.orderBtn} size='lg'>
+                                <Button type={"button"} variant={"dark"} block className={style.orderBtn} size='lg'>
                                     <FontAwesomeIcon icon={faShoppingCart} /> {locale.RESERVATION.ORDER_BUTTON}
                                 </Button>
                             </div>
+
                         </div>
                     </Col>
-                    </Row>
-
+                </Row>
             </Tab.Container>
         </>
     }

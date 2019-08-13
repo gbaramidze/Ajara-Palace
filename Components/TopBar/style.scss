@@ -1,9 +1,10 @@
 @import "../../Configs/css/variables";
 
 .wrapper {
-  background: #ad3333;
-  color: #dddddd;
+  background: #fff;
+  color: $brand;
   padding-bottom: 4px;
+  font-weight: 500;
 }
 .wrapper a {
   color: #bfbfbf;

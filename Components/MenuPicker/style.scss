@@ -17,6 +17,9 @@
   cursor: pointer;
   background: linear-gradient(#fff, #eee, #fff);
 }
+.slick-slider {
+  height: 53px;
+}
 .product {
   background: #fff;
   display: flex;
@@ -52,6 +55,7 @@
     background-position: center !important;
     background-repeat: no-repeat !important;
     box-shadow: 0 0 4px 7px white inset;
+    transition: ease-in-out background-position 250ms;
     width: 150px;
     height: 150px;
     margin: 0 auto 10px;
@@ -96,6 +100,10 @@
   display: flex;
   padding: 3px 6px;
 }
+.orderList:hover {
+  background: #fff;
+  transition: ease-in-out 200ms;
+}
 .orderImg {
   border-radius: 50%;
   width: 20px;
@@ -131,7 +139,7 @@
 
 
 .inOrder .product {
-  border-left: 3px solid #ad3333
+  border-left: 3px solid $brand
 }
 .inOrder .product:active {
 }
@@ -213,7 +221,7 @@
 .cats {
   margin: 0 0 10px;
   padding: 15px 0 0;
-  border-bottom: 2px solid #ad3333;
+  border-bottom: 2px solid #f2f2f2;
   position: sticky;
   top: 80px;
   z-index: 20;
@@ -222,6 +230,7 @@
   width: 100%;
   flex-direction: row;
   flex-wrap: nowrap;
+  box-shadow: 0 6px 4px -6px #f2f2f2;
 }
 
 
@@ -265,6 +274,7 @@
   border-radius: 4px;
   margin-top: 10px;
   background: $brand;
+  border-color: $secondary;
 }
 .orderBtn:hover {
   background: $secondary;
@@ -356,8 +366,39 @@
 .nav-pills .nav-link.active,.slick-current a {
   background-color: #fff !important;
   border-bottom: 2px solid $brand;
-  color: #730000;
+  color: $secondary;
   border-radius: 0 !important;
   padding: 10px 0;
   margin: 0 10px;
+}
+
+.menu-bgWrapper {
+  display: flex;
+  justify-content: center;
+  min-height: 160px;
+}
+.menu-bg {
+  background: url("../../assets/images/spinner/bg.png") no-repeat;
+  width: 200px;
+  height: 133px;
+  filter: grayscale(.6) blur(2px) opacity(0.1);
+}
+
+.menu-bg.a {
+  background-position: 0 0;
+}
+.menu-bg.b {
+  background-position: -200px 0;
+}
+.menu-bg.c {
+  background-position: -400px 0;
+}
+.menu-bg.d {
+  background-position: 0 -123px;
+}
+.menu-bg.e {
+  background-position: -200px -123px;
+}
+.menu-bg.f {
+  background-position: -400px -123px;
 }
