@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Spy from '../ScrollSpy';
 import {connect} from "react-redux";
 import {Col, Nav, Row, Tab} from "react-bootstrap";
 import {faChevronLeft, faChevronRight, faShoppingCart, faTimes} from "@fortawesome/free-solid-svg-icons";
@@ -6,7 +7,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import CountUp from 'react-countup';
 import Button from "react-bootstrap/Button";
 import Counter from "../Counter";
-import Scrollspy from 'react-scrollspy'
 import Slider from "react-slick";
 import LazyLoad from 'react-lazyload';
 import {ReactNode} from "react";
@@ -50,6 +50,7 @@ class MenuPicker extends React.Component {
         showMobile: false,
         stuck: 0,
         slideIndex: 0,
+        selectedName: null,
         isScrolling: false,
         unScroll: false,
     };
@@ -70,7 +71,7 @@ class MenuPicker extends React.Component {
 
 
     public componentDidMount(): void {
-        // window.addEventListener('scroll', this.handleScroll);
+         window.addEventListener('scroll', this.handleScroll);
          this.handleScroll();
     }
 
@@ -190,12 +191,14 @@ class MenuPicker extends React.Component {
 
     slider: Slider;
 
-    private navigateTo(elem: React.ReactElement): void {
+    private navigateTo(elem: Element): void {
         const { slideIndex, isScrolling } = this.state;
+        const name = this.catName(elem.getAttribute('id'))
         const index = Array.prototype.slice.call(document.querySelector('.MenuList').children).indexOf(elem);
         if(index > -1 && slideIndex !== index && !isScrolling) {
             this.setState({
-                slideIndex: index
+                slideIndex: index,
+                selectedName: name
             },()=> {
                 this.slider.slickGoTo(index);
                 this.setState({
@@ -207,51 +210,38 @@ class MenuPicker extends React.Component {
     }
 
     private getElementY(query): number {
-        return window.pageYOffset + document.querySelector(query).getBoundingClientRect().top
+        return window.pageYOffset + document.querySelector(`#${query}`).getBoundingClientRect().top
     }
 
     doScrolling(e): void {
         e.preventDefault();
+        setTimeout(()=> this.startScroll(document.querySelector('.slick-active')), 47)
     }
 
+    goto(e): void {
+        const elem = document.querySelector(`[to=${e.target.value}]`).parentElement;
+        this.setState({
+            selectedName: e.target.value
+        },()=>{
+            this.startScroll(elem)
+        })
+    }
 
-    startScroll(e, duration = 300) {
-        const { isScrolling, unScroll } = this.state;
+    startScroll(e) {
+        const { unScroll } = this.state;
         const element = encodeURI(e.querySelector('a').getAttribute('to'));
         let change = this.getElementY(element) - 150;
 
         if(!unScroll) {
-            if(!isScrolling) {
-                this.setState({
-                    isScrolling: true
-                });
-                scrollTo({
-                    top: change,
-                    behavior: 'smooth'
-                });
-
-                window.onscroll = () => {
-                    let currentScrollOffset = window.pageYOffset || document.documentElement.scrollTop;
-                    // Scroll reach the target
-                    if (currentScrollOffset === change) {
-                        this.setState({
-                            isScrolling: false
-                        })
-                    }
-                }
-            }
+            scrollTo({
+                top: change,
+                behavior: 'smooth'
+            });
         }
         this.setState({
             unScroll: false
         })
     }
-
-    static easeInOutQuad(t, b, c, d): number {
-        t /= d/2;
-        if (t < 1) return c/2*t*t + b;
-        t--;
-        return -c/2 * (t*(t-2) - 1) + b;
-    };
 
     public catName(str: string): string {
         return encodeURI(str.split(" ").join('-').toLowerCase())
@@ -265,7 +255,7 @@ class MenuPicker extends React.Component {
     };
 
     public render(): React.ReactElement {
-        const { oldPrice, newPrice, lastEdit, showMobile,stuck}=this.state;
+        const { oldPrice, newPrice, lastEdit, showMobile,stuck, selectedName}=this.state;
         const {language, order, locale} = this.props;
         const kitchen = this.kitchen();
         const bar = this.bar();
@@ -316,13 +306,11 @@ class MenuPicker extends React.Component {
             </span>
         );
 
-
-
         const settings = {
             className: "active",
             dots: false,
             infinite: false,
-            speed: 600,
+            speed: 300,
             swipeToSlide: true,
             focusOnSelect: true,
             variableWidth: true,
@@ -332,39 +320,38 @@ class MenuPicker extends React.Component {
                 this.startScroll(document.querySelector('.slick-active'));
             }
         };
-
+        const items = [...this.kitchen().map(item=> this.catName(item.name_en)), ...this.bar().map(item=> this.catName(item.name_en))];
         return <>
             <Tab.Container>
                 <div className={style.stickyNav}>
                         <Nav variant="pills" className={`${style.cats} mr-auto `}>
-                            <div className={style.topCats}>
-                                {categories.map((category)=>
-                                    <Nav.Item key={category}>
-                                        <Nav.Link
-                                            onClick={()=> document.activeElement.scrollIntoView({block: 'end', inline: 'center'})}
-                                        >
-                                            {category}
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                )}
-                            </div>
-                            <div className={style.toggleMobile} onClick={()=> this.setState({ showMobile: true })}>
-                                <FontAwesomeIcon icon={faShoppingCart} />
-                                ({order.length})
-                            </div>
+                            <select value={selectedName ? selectedName : this.catName(this.kitchen()[0]['name_en'])} onChange={(e)=> {this.goto(e)}}  className={style.mobileNav}>
+                                {
+                                    this.kitchen().map(item=> {
+                                        const name = language === 'ka' ? item.name : item[`name_${language}`] || item.name;
+                                        return <option value={this.catName(item.name_en)} key={item.id}>{name}</option>
+                                    })
+                                }
+                                {
+                                    this.bar().map(item=> {
+                                        const name = language === 'ka' ? item.name : item[`name_${language}`] || item.name;
+                                        return <option value={this.catName(item.name_en)} key={item.id}>{name}</option>
+                                    })
+                                }
+                            </select>
                             <Nav.Item className={style.sliderWrapper}>
+                                <Spy items={items} offset={window.innerHeight - 160} addClassName="slick-active" onUpdate={(e)=> this.navigateTo(e)} className={style.sliderNav}>
                                     <Slider {...settings} ref={slider => (this.slider = slider)}>
-                                        {
-                                            categories.map((category)=> {
-                                                return Object.values(data[category]).map((item)=> {
-                                                    const name = language === 'ka' ? item.name : item[`name_${language}`] || item.name;
-                                                    return  <Scrollspy offset={window.innerHeight - 160} items={[this.catName(item.name_en)]} currentClassName="active" onUpdate={(e)=> this.navigateTo(e)}>
-                                                    <Nav.Link href={`#${this.catName(item.name_en)}`} to={`#${this.catName(item.name_en)}`} onClick={(e)=> this.doScrolling(e)}>{name.trim()}</Nav.Link>
-                                                    </Scrollspy>
-                                                })
-                                            })
-                                        }
+                                            {
+                                                categories.map((category)=>
+                                                     Object.values(data[category]).map((item)=> {
+                                                        const name = language === 'ka' ? item.name : item[`name_${language}`] || item.name;
+                                                        return <Nav.Link href={`#${this.catName(item.name_en)}`} to={`${this.catName(item.name_en)}`} onClick={e => this.doScrolling(e)}>{name.trim()}</Nav.Link>
+                                                    })
+                                                )
+                                            }
                                     </Slider>
+                                </Spy>
                             </Nav.Item>
                         </Nav>
                 </div>
@@ -483,6 +470,27 @@ class MenuPicker extends React.Component {
 
                         </div>
                     </Col>
+
+                        <Col xs={12}>
+                            <div className={`${style.toggleMobile} ${style.total}`} onClick={()=> this.setState({ showMobile: true })}>
+                                <div className={style.totalMessage}>
+                                    <FontAwesomeIcon icon={faShoppingCart} />
+                                </div>
+
+                                <CountUp
+                                    start={oldPrice * 1.1}
+                                    end={newPrice * 1.1}
+                                    duration={2.75}
+                                    separator=" "
+                                    decimals={2}
+                                    decimal=","
+                                    suffix=" ₾"
+                                    className={style.totalNumber}
+                                />
+
+                                <FontAwesomeIcon icon={faChevronRight} />
+                            </div>
+                        </Col>
                 </Row>
             </Tab.Container>
         </>

@@ -102,7 +102,7 @@ module.exports = (env,args) => {
         devServer: {
             contentBase: './',
             compress: true,
-            port: 80,
+            port: 3001,
             historyApiFallback: true
         },
         plugins: [

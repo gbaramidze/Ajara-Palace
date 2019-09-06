@@ -14,6 +14,7 @@ import { registerLocale } from  "react-datepicker";
 import * as ru from 'date-fns/locale/ru';
 import Spinner from "../../Components/Spinner";
 import MenuPicker from "../../Components/MenuPicker";
+import {Rooms} from "./interface";
 registerLocale('ru', ru);
 
 const style = require('./style.scss');
@@ -93,7 +94,7 @@ class Reservation extends React.Component {
             fetch("http://ajarapalace.ge/admin/ajax/?rooms",{ signal: this.controller.signal }).then(res=> {
                 return res.json()
             }).then(response=>{
-                const rooms = response.rooms.reverse();
+                const rooms: Rooms = response.rooms.reverse();
                 this.setState({
                     rooms
                 });
@@ -182,24 +183,6 @@ class Reservation extends React.Component {
         }
     }
 
-    getMaxWidth(): any {
-        const {rooms} = this.state;
-        let floors = [];
-        Object.values(rooms).forEach((room,index) =>{
-                let left = 0;
-                floors.push(index);
-                Object.values(room.tables).forEach((item: iTable)=> {
-                    const width = parseInt(item.coords.split(":")[0]);
-                    if(width > left) {
-                        left = width;
-                        floors[index] = { left: left + 131 }
-                    }
-                })
-            }
-        );
-        return floors;
-    }
-
     selectTable = (floor, table) => {
         const { locale } = this.state;
         this.setState({
@@ -257,7 +240,7 @@ class Reservation extends React.Component {
 
                     {step === 1 && (loading ? <Spinner /> : <Tab.Container id="reservation" defaultActiveKey="room-0">
                         <Nav variant="pills" className={style.navWrapper}>
-                            {Object.values(rooms).map((room, index: number)=>
+                            {Object.values(rooms).map((room, index: number) =>
                                 <Nav.Item key={index}>
                                     <Nav.Link
                                         eventKey={`room-${index}`}
@@ -269,7 +252,7 @@ class Reservation extends React.Component {
                             )}
                         </Nav>
                         <Tab.Content>
-                            {Object.values(rooms).map((room, index: number)=>
+                            {Object.values(rooms).map((room, index: number): React.ReactNode =>
                                 <Tab.Pane eventKey={`room-${index}`} key={index}  className={style.tableList}>
                                     {Object.values(room.tables).map((table: iTable,i)=>
                                         <Table coords={table.coords} type={table.type} number={table.number} key={i} onClick={()=> this.selectTable(room.name, table.number)}/>

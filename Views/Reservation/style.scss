@@ -10,8 +10,8 @@
   position: relative;
   overflow: auto;
   margin: 20px 0;
-  border: 1px solid #a71818;
-  box-shadow: 0 0 0 2px #ab0b0b;
+  border: 1px solid $secondary;
+  box-shadow: 0 0 0 2px $secondary;
 }
 .tableList:before {
   content: '';

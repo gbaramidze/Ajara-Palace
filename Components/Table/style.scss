@@ -5,6 +5,7 @@
   text-align: center;
   line-height: 70px;
   cursor: pointer;
+  transition: ease-in 150ms;
 }
 .rtable.horizontal {
   width: 131px;
@@ -23,4 +24,7 @@
   height: 129px;
   line-height: 125px;
   background: url(../../assets/images/tables/vertical_free.png) no-repeat;
+}
+.rtable:hover {
+  filter: drop-shadow(0px 0px 5px  #CCC)
 }
