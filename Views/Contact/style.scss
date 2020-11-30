@@ -1,0 +1,102 @@
+@import "../../Configs/css/_variables.scss";
+.pageWrapper {
+  position: relative;
+  min-height: calc(100vh - 280px);
+  display: block;
+  & .contactPage {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.contactInfo {
+  background: $brand;
+  position: relative;
+  color: #fff;
+  padding: 60px;
+  border-radius: 0 10px 10px 0;
+  &:after {
+    content: '';
+    position: absolute;
+    background: url(/assets/images/logo-white.png) no-repeat;
+    bottom: 19px;
+    right: -1px;
+    width: 80px;
+    height: 64px;
+    transform: rotate(-45deg);
+    filter: brightness(0.2);
+  }
+  & .contactColumn {
+    font-size: 14px;
+    margin: 30px 0;
+    & svg {
+      min-width: 16px;
+      font-size: 16px;
+      display: inline-block;
+      text-align: center;
+      margin-right: 15px;
+      color: #ccc;
+    }
+  }
+  & .socialGroup {
+    display: flex;
+  }
+}
+@media screen and (min-width: 769px) {
+  .pageWrapper {
+    & .contactPage {
+      & .col-lg-8 {
+        margin-left: 15px;
+        margin-right: -15px;
+      }
+      & .col-lg-4 {
+        margin-left: -15px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+
+  .pc {
+    padding: 0 15px;
+    & .row {
+      margin-bottom: 0;
+      padding: 0;
+    }
+    & iframe {
+      min-height: 300px;
+    }
+  }
+  .pageWrapper {
+    position: unset;
+    min-height: unset;
+    & .contactPage {
+      position: unset;
+      transform: unset;
+      & .col-lg-8 {
+        margin: 0;
+        padding: 0;
+      }
+      & .col-lg-4 {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    & .contactInfo {
+      padding: 30px;
+      border-radius: 0;
+      & h3 {
+        font-size: 24px;
+      }
+      & .contactColumn {
+        margin: 20px 0;
+      }
+      .socialGroup {
+        display: none;
+      }
+    }
+  }
+}

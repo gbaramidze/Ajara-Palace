@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Button, Container, Nav, Tab} from "react-bootstrap";
+import { Container, Nav, Tab} from "react-bootstrap";
 import {connect} from "react-redux";
 import Table from "../../Components/Table";
 import {iTable} from "../../Components/Table/interface";
@@ -8,14 +8,13 @@ import {faBars, faCalendarAlt, faChair, faCheck} from "@fortawesome/free-solid-s
 import iLocale from "../../Configs/locale/interface/iLocale";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import * as moment from 'moment';
 import { registerLocale } from  "react-datepicker";
-import * as ru from 'date-fns/locale/ru';
+import {ru, ka} from 'date-fns/locale';
 import Spinner from "../../Components/Spinner";
-import MenuPicker from "../../Components/MenuPicker";
 import {Rooms} from "./interface";
 registerLocale('ru', ru);
+registerLocale('ka', ka);
 
 const style = require('./style.scss');
 
@@ -74,7 +73,6 @@ class Reservation extends React.Component {
 
     componentDidMount(): void {
         this.getTables();
-        this.getCategories();
     }
 
     getTables(): void {
@@ -91,7 +89,7 @@ class Reservation extends React.Component {
 
             // getting data about rooms
 
-            fetch("http://ajarapalace.ge/admin/ajax/?rooms",{ signal: this.controller.signal }).then(res=> {
+            fetch("https://ajarapalace.ge/admin/ajax/?rooms",{ signal: this.controller.signal }).then(res=> {
                 return res.json()
             }).then(response=>{
                 const rooms: Rooms = response.rooms.reverse();
@@ -121,52 +119,7 @@ class Reservation extends React.Component {
         }
     }
 
-    getCategories(): void {
-        const {dispatch, categories} = this.props;
-        if(!categories.length) {
 
-            // sets up loading
-            dispatch({
-                type: 'loading',
-                payload: {
-                    loading: true,
-                }
-            });
-
-            // getting data about rooms
-
-            fetch("http://ajarapalace.ge/admin/ajax/?categories", {signal: this.controller.signal}).then(res => {
-                return res.json()
-            }).then(response => {
-                const categories = response.categories;
-                this.setState({
-                    categories
-                });
-
-
-                dispatch({
-                    type: 'loading',
-                    payload: {
-                        loading: false,
-                    }
-                });
-                dispatch({
-                    type: 'categories',
-                    payload: {
-                        categories
-                    }
-                })
-
-            }).catch()
-        }
-    }
-
-    showCategories(): void {
-        this.getCategories();
-        this.setState({step: 3},()=> {
-            document.querySelector('.step.active').scrollIntoView({block: 'end', inline: 'center'});
-        })
-    }
 
     componentWillUnmount(): void {
         const {dispatch} = this.props;
@@ -207,7 +160,7 @@ class Reservation extends React.Component {
     };
 
     render(): React.ReactElement {
-        const { step, locale, selectedTable, selectedDate , startDate, language, selected} = this.state;
+        const { step, locale, selectedTable, selectedDate , startDate, language} = this.state;
         const {loading, rooms, categories} = this.props;
         const minTime = moment("10:00", "HH:mm").toDate();
         const maxTime = moment("21:00", "HH:mm").toDate();
@@ -271,17 +224,16 @@ class Reservation extends React.Component {
                             inline
                             minTime={minTime}
                             maxTime={maxTime}
-                            locale={language !== 'ka' ? language : 'en'}
+                            locale={language}
                             showTimeSelect
                             timeFormat="HH:mm"
                             timeIntervals={15}
                             dateFormat="MMMM d, yyyy hh:mm"
-                            timeCaption="Время"
+                            timeCaption={locale.RESERVATION.TIME}
                         />
-                        <Button variant={'dark'} size='lg' onClick={()=> this.showCategories()}><FontAwesomeIcon icon={faCheck} /> OK</Button>
                     </div>
                     }
-                    {step === 3 && (loading || !categories.length ? <Spinner/> : <MenuPicker data={categories} selected={selected} />
+                    {step === 3 && (loading || !categories.length ? <Spinner/> : <div>s</div>
                     )}
                 </Container>
             </div>

@@ -1,0 +1,100 @@
+@import "../../Configs/css/_variables.scss";
+
+
+.orderPrice {
+  flex: 0 1 10%;
+  font-size: 17px;
+}
+
+.orderCount {
+  flex: 0 1 30%;
+}
+
+
+.orders li:first-child {
+  padding-bottom: 10px;
+  padding-top: 0;
+  top: 0;
+}
+
+
+.orders {
+  height: 100%;
+}
+
+
+.orders {
+  padding: 10px 10px 0 10px;
+  list-style: none;
+  overflow-y: auto;
+  .cartHeader {
+    display: flex;
+    justify-content: space-between;
+  }
+  &::-webkit-scrollbar {
+    width: 3px;
+    background-color: #f2f2f2;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #f2f2f2;
+  }
+  li:first-child {
+    position: sticky;
+    top:-10px;
+    padding-top: 10px;
+    background: #f2f2f2;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    z-index: 3;
+  }
+}
+.orderList {
+  display: flex;
+  padding: 3px 6px;
+}
+.orderList:hover {
+  background: #fff;
+  transition: ease-in-out 200ms;
+}
+.orderImg {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+.orderTitle {
+  max-width: 100%;
+  overflow: hidden;
+  flex: 1 1 60%;
+  font-size: 16px;
+  font-family: "Roboto",  "ALK Sanet",  sans-serif;
+}
+
+.orderCount {
+  flex: 0 1 10%;
+  color: #333333;
+  font-size: 12px;
+  text-align: center;
+  transition: all 100ms ease-in-out;
+}
+
+.orderPrice {
+  flex: 0 1 20%;
+  text-align: right;
+  font-size: 14px;
+}
+
+.orderCount.highlight {
+  transform: scale(1.3);
+  font-size: 14px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .trash {
+    display: none;
+  }
+}

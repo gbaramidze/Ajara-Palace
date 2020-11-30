@@ -4,18 +4,12 @@
 
 html,body {
     height: 100%;
+    background: #edefed
 }
 #root {
     display: flex;
     flex-direction: column;
     min-height: 100%;
-}
-.phx-js-view {
-    width: 100%;
-    border: 1px solid #b56666;
-    text-align: center;
-    flex-direction: row;
-    align-self: center;
 }
 
 @font-face {
@@ -27,6 +21,22 @@ html,body {
     url('./assets/fonts/alk-sanet-webfont.ttf') format('truetype'), /* Safari, Android, iOS */
     url('./assets/fonts/alk-sanet-webfont.svg#alk_sanetregular') format('svg'); /* Legacy iOS */
 }
+
+@font-face {
+    font-family: 'gel';
+    src: url('./assets/fonts/gel-webfont.eot');
+    src: url('./assets/fonts/gel-webfont.eot?#iefix') format('embedded-opentype'),
+    url('./assets/fonts/gel-webfont.woff2') format('woff2'),
+    url('./assets/fonts/gel-webfont.woff') format('woff'),
+    url('./assets/fonts/GEL.ttf') format('truetype'),
+    url('./assets/fonts/gel-webfont.svg#_bpg_gelregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+gel { font-family: "gel",sans-serif;}
+gel:before { content: 'a' }
+.gel { font-family: "gel",sans-serif;}
 
 a {
   color: $brand

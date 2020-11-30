@@ -3,9 +3,9 @@
     position: relative;
     .counter {
       display: flex;
-      margin-left: 20px;
-      flex-direction: column;
+      flex-direction: row;
       z-index: 10;
+      justify-content: center;
       .count {
         color: #888;
       }
@@ -13,35 +13,35 @@
         display: none;
       }
       &:hover {
-        margin-left: 0;
-        position: absolute;
         margin-top: -7px;
+
         .btn {
           display: block;
           z-index: 2;
+          background: none;
+          border: none;
           position: absolute;
-          margin-left: 8px;
+          &:focus {
+            box-shadow: none !important;
+          }
         }
         button:first-child {
-          bottom: 100%;
+          left: -22px;
           height: 30px;
         }
         button:last-child {
-          top: 100%;
+          right: -22px;
           height: 30px;
         }
         .count {
-          background: #eaebec;
           display: flex;
           justify-content: center;
           align-items: center;
           padding: 5px;
           color: #666;
-          border: 1px solid #ddd;
           border-left: 0;
           border-right: 0;
-          width: 100%;
-          margin-left: 10px;
+          min-width: 22px;
         }
       }
     }

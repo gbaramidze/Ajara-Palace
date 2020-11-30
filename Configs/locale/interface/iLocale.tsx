@@ -16,5 +16,10 @@ export default interface ILocale extends LocalizedStringsMethods{
         DATE_SUBTITLE: string
         MENU: string
         MENU_SUBTITLE: string
+        MY_ORDER: string
+        FEE: string
+        ORDER_BUTTON: string
+        TOTAL: string
+        TIME: string
     }
 }

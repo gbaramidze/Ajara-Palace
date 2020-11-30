@@ -1,8 +1,7 @@
 import * as React from 'react'
-import {useEffect, useState, memo} from "react";
-import {instanceOf} from "prop-types";
+import {useEffect, useState} from "react";
 
-export default React.memo(function Spy({items, children, addClassName, onUpdate, className}) {
+const Spy = ({items, children, addClassName, onUpdate, className}) => {
     const [selectedElement, setSelectedElement] = useState(false);
     let Timeout;
     const startTracking = () => {
@@ -25,7 +24,8 @@ export default React.memo(function Spy({items, children, addClassName, onUpdate,
 
     useEffect(()=> {
         window.addEventListener('scroll', startTracking)
-    });
+        return () => window.removeEventListener("scroll",  startTracking)
+    },[]);
 
     const modify = item => {
         const props = {
@@ -43,11 +43,14 @@ export default React.memo(function Spy({items, children, addClassName, onUpdate,
         };
         return React.cloneElement(item, props)
     };
-    const Parent = React.Children.map(children, element=> modifyChilds(element));
 
-    return Parent
-})
+    return React.Children.map(children, element=> modifyChilds(element))
+};
 
 function isVisible(elem) {
     return window.pageYOffset > elem.offsetTop && window.pageYOffset < (elem.offsetTop + elem.getBoundingClientRect().height);
 }
+
+export default React.memo(Spy)
+
+

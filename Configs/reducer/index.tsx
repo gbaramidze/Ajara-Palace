@@ -15,13 +15,30 @@ const locales = {
 const locale = new LocalizedStrings(locales);
 locale.setLanguage('ka');
 
+const getOrders = () => JSON.parse(localStorage.getItem("orders"));
+const setOrders = (orders) => localStorage.setItem("orders", JSON.stringify(orders));
+
+const getForm = () => JSON.parse(localStorage.getItem("form"));
+const setForm = (form) => localStorage.setItem("form", JSON.stringify(form));
+
+const initialForm = {
+    mobile: '',
+    address: '',
+    entrance: '',
+    floor: '',
+    flat: '',
+    comment: '',
+    paymentType: 0
+};
+
 const initialState = {
     locale,
     language: 'ka',
     loading: false,
     rooms: [],
     categories: [],
-    order: []
+    order: getOrders() || [],
+    form: getForm() || initialForm
 };
 
 export default function reducer(state = initialState, action) {
@@ -52,8 +69,18 @@ export default function reducer(state = initialState, action) {
     }
 
     if(action.type === 'order') {
+        setOrders(action.payload.order);
         return {
-            ...state, order: action.payload.order,
+            ...state,
+            order: action.payload.order
+        }
+    }
+
+    if(action.type === 'form') {
+        setForm(action.payload);
+        return {
+            ...state,
+            form: action.payload
         }
     }
 

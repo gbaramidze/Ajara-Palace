@@ -1,0 +1,39 @@
+@import "../../Configs/css/_variables.scss";
+
+
+.radioBox {
+  display: flex;
+  margin: 10px 0;
+  & .option {
+    border: 2px solid #f2f2f2;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 12px;
+    margin-right: 10px;
+    color: #555;
+    cursor: pointer;
+    transition: ease-in-out all 120ms;
+
+    @media screen and (max-width: 768px) {
+      text-align: center;
+    }
+
+    &.selected {
+      color: $brand;
+      border-color: $brand;
+    }
+    &.disabled {
+      color: #888;
+      cursor: not-allowed;
+      & .disabled {
+        pointer-events: none;
+      }
+    }
+    &:hover {
+      background: #f2f2f2;
+    }
+    & svg {
+      margin-right: 10px;
+    }
+  }
+}

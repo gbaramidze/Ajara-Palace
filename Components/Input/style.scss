@@ -1,0 +1,68 @@
+@import "../../Configs/css/_variables.scss";
+
+.inputContainer {
+  background: transparent;
+  position: relative;
+  height: 42px;
+  cursor: text;
+  margin-bottom: 35px;
+  border-bottom: 1px solid #edefed;
+  &.error {
+    border-color: #f00
+  }
+  &:before {
+    left: 0;
+    content: '';
+    background: transparent;
+    height: 1px;
+    width: 0;
+    bottom: -1px;
+    position: absolute;
+    transition: width ease-in-out 250ms;
+  }
+
+  &.inFocus {
+    &:before {
+      background: $brand;
+      width: 100%;
+    }
+  }
+
+  &.textarea {
+    height: 60px;
+  }
+  & textarea{
+    resize: none;
+  }
+
+  .inputLabel {
+    position: absolute;
+    bottom: 0;
+    font-size: 15px;
+    color: $brand;
+    font-weight: 500;
+    pointer-events: none;
+    transition: ease all 150ms;
+
+    &.active {
+      bottom: 30px;
+    }
+    &.textarea.active {
+      bottom: 55px;
+    }
+  }
+  input, textarea {
+    padding: 0;
+    border-radius: 0;
+    border: none;
+  }
+}
+.input {
+  display: block;
+  width: 100%;
+  height: 100%;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}

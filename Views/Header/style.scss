@@ -3,6 +3,13 @@
   border-top: 3px solid #fff;
   box-shadow: 2px 1px 1px rgb(31, 32, 32);
 }
+.stickyTop {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  min-height: 80px
+}
 
 .navBar div > a{
   text-shadow: 0 1px 0 #3c3c3c;
