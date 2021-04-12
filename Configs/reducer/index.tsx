@@ -38,7 +38,9 @@ const initialState = {
     rooms: [],
     categories: [],
     order: getOrders() || [],
-    form: getForm() || initialForm
+    form: getForm() || initialForm,
+    sidebar: false,
+    showMobile: false
 };
 
 export default function reducer(state = initialState, action) {
@@ -73,6 +75,20 @@ export default function reducer(state = initialState, action) {
         return {
             ...state,
             order: action.payload.order
+        }
+    }
+
+    if(action.type === 'sidebar') {
+        return {
+            ...state,
+            sidebar: action.payload
+        }
+    }
+
+    if(action.type === 'showMobile') {
+        return {
+            ...state,
+            showMobile: action.payload
         }
     }
 

@@ -5,6 +5,7 @@ import Spinner from "../../Components/Spinner";
 import {Container} from "react-bootstrap";
 import Welcome from "../../Components/Welcome";
 import Helmet from 'react-helmet';
+import MobileNavigation from "../../Components/MobileNavigation";
 
 const Home = () => {
   const {categories, language, locale} = useSelector(state=>state);
@@ -48,6 +49,7 @@ const Home = () => {
         <meta name="keywords" content={locale.KEYWORDS} />
         <meta name="description" content={locale.DESCRIPTION} />
       </Helmet>
+      <MobileNavigation/>
       <Welcome/>
       <Container>
       {

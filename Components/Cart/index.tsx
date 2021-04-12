@@ -6,6 +6,8 @@ import Button from "react-bootstrap/Button";
 import {Modal} from "react-bootstrap";
 import Counter from "../Counter";
 import {Meal} from "../MenuPicker";
+import MobileNavigation from "../MobileNavigation";
+import * as Feather from "react-feather";
 
 const style = require("./style.scss");
 interface ICart {
@@ -15,6 +17,7 @@ interface ICart {
   highlightRef?: React.MutableRefObject<any>,
   lastEdit?: number;
   disableClear?:boolean;
+  toggleMobile?: void
 }
 const Cart = ({
   onClose,
@@ -22,9 +25,10 @@ const Cart = ({
   onChangeOrder,
   highlightRef  ,
   lastEdit,
-    disableClear
+  disableClear,
+  toggleMobile
 }: ICart) => {
-  const {order, locale, language} = useSelector(state=>state);
+  const {order, locale, language, showMobile} = useSelector(state=>state);
   const dispatch = useDispatch();
   const [showTrash, setShowTrash] = React.useState(false);
 
@@ -96,6 +100,11 @@ const Cart = ({
 
   return (
     <>
+      <MobileNavigation
+        left={(<Feather.ArrowLeft size={24} onClick={toggleMobile}/>)}
+        center={locale.RESERVATION.MY_ORDER}
+        right={!disableClear && (<Feather.Trash size={24} onClick={toggleTrash}/>)}
+      />
       <ul className={style.orders} ref={ordersRef || null}>
         <li className={style.cartHeader}><h3>{locale.RESERVATION.MY_ORDER}</h3>
           {
@@ -111,12 +120,15 @@ const Cart = ({
                   centered={true}
                   animation={false}
                 >
-                  <Modal.Header>
-                    <Modal.Title translate={language}>{locale.RESERVATION.TRASH.HEADER}</Modal.Title>
+                  <Modal.Header translate={language}>
+                    <Modal.Title>{locale.RESERVATION.TRASH.HEADER}</Modal.Title>
                   </Modal.Header>
+                  <Modal.Body>
+                    {locale.RESERVATION.TRASH.MSG}
+                  </Modal.Body>
                   <Modal.Footer>
                     <Button variant="primary" onClick={clearCart}>{locale.RESERVATION.TRASH.CLEAR}</Button>
-                    <Button variant="secondary" onClick={toggleTrash} className={style.trash}>
+                    <Button variant="secondary" onClick={toggleTrash}>
                       {locale.RESERVATION.TRASH.CANCEL}
                     </Button>
                   </Modal.Footer>
@@ -129,23 +141,48 @@ const Cart = ({
           order.map((item: Meal) => {
             const name = language === 'ka' ? item.name : item[`name_${language}`];
             return (
-              <li className={`${style.orderList}`} key={item.id} title={item.name}>
-                <div className={style.orderTitle}>
-                  <img src={`${item.thumb}&w=350`} className={`${style.orderImg}`} alt={item[name]}/>
-                  {name}
-                </div>
-                <div className={`${style.orderCount} ${lastEdit === item.id ? style.highlight : ''}`}
-                     ref={highlightRef || null}>
-                  <Counter increment={() => addToOrder(item, 'increase', 1)}
-                           decrement={() => addToOrder(item, 'decrease', 1)}>
-                    {item.count}
-                  </Counter>
-                </div>
-                <div className={`${style.orderPrice} ${lastEdit === item.id ? style.highlight : ''}`}
-                     ref={highlightRef}>
-                  {item.price} <span className="gel">a</span>
-                </div>
-              </li>
+              <>
+                {
+                  !showMobile ? (
+                    <li className={`${style.orderList} ${style.desktop}`} key={`desktop-${item.id}`} title={item.name}>
+                      <div className={style.orderTitle}>
+                        <img src={`${item.thumb}&w=350`} className={`${style.orderImg}`} alt={item[name]}/>
+                        {name}
+                      </div>
+                      <div className={`${style.orderCount} ${lastEdit === item.id ? style.highlight : ''}`}
+                           ref={highlightRef || null}>
+                        <Counter increment={() => addToOrder(item, 'increase', 1)}
+                                 decrement={() => addToOrder(item, 'decrease', 1)}>
+                          {item.count}
+                        </Counter>
+                      </div>
+                      <div className={`${style.orderPrice} ${lastEdit === item.id ? style.highlight : ''}`}
+                           ref={highlightRef}>
+                        {item.price} <span className="gel">a</span>
+                      </div>
+                    </li>
+                  ) : (
+                    <li className={`${style.orderList} ${style.mobile}`} key={`mobile-${item.id}`} title={item.name}>
+                      <img src={`${item.thumb}&w=350`} className={`${style.orderImg}`} alt={item[name]}/>
+                      <div className={style.orderTitle}>
+                        {name}
+                        <div className={`${style.orderPrice}`}
+                             ref={highlightRef}>
+                          {item.price} <span className="gel">a</span>
+                        </div>
+                      </div>
+                      <div className={`${style.orderCount}`}
+                           ref={highlightRef || null}>
+                        <Counter increment={() => addToOrder(item, 'increase', 1)}
+                                 decrement={() => addToOrder(item, 'decrease', 1)}>
+                          {item.count}
+                        </Counter>
+                      </div>
+
+                    </li>
+                  )
+                }
+              </>
             )
           })
         }

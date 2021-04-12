@@ -8,7 +8,7 @@
   position: sticky;
   top: 0;
   z-index: 1020;
-  min-height: 80px
+  min-height: 55px
 }
 
 .navBar div > a{
@@ -21,6 +21,7 @@
   color: #ffffff80;
   text-decoration: none
 }
+
 .navBar div > a:hover{
   color: rgba(255, 255, 255, 0.79);
 }
@@ -36,14 +37,14 @@
 .navigation {
   font-family: 'Roboto', sans-serif;
 }
-
+.mobile {
+  display: none;
+}
+.desktop {
+  display: block;
+}
 @media screen and (max-width: 768px){
-  .navbar-nav div > a{
-    border-top: 1px solid #2b2b2b;
-    width: 100%;
-    display: block;
-  }
-  .navbar-nav div:last-child > a {
-    border-bottom: 1px solid #2b2b2b;
+  .desktop {
+    display: none;
   }
 }

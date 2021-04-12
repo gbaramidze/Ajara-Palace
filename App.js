@@ -2,13 +2,14 @@ import React from 'react';
 import Header from './Views/Header'
 import {BrowserRouter as Router} from 'react-router-dom';
 import reducer from './Configs/reducer/index.tsx';
-import {Provider} from 'react-redux'
+import {Provider, useSelector} from 'react-redux'
 import {createStore} from 'redux'
 import Footer from './Views/Footer';
 
 import Helmet from 'react-helmet';
 import Routes from './Views/Routes';
 import values from './Configs/values';
+import $ from "jquery";
 
 const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 const isProd = process.env.NODE_ENV === "production";
@@ -21,6 +22,7 @@ const App = () => {
         updateViaCache: "imports",
       });
     }
+    window.jQuery = $;
   });
   return (
     <>

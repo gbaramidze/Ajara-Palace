@@ -2,12 +2,11 @@ import * as React from 'react';
 import Home from "../Home";
 import CheckOut from "../CheckOut";
 import {Redirect, Route, Switch } from 'react-router-dom';
-import {useSelector} from "react-redux";
 import Contact from "../Contact";
 import Promotions from "../Promotions";
 
+
 const Routes = () => {
-  const {order} = useSelector(state=>state);
   return (
     <>
       <Switch>

@@ -30,6 +30,7 @@
   height: 100%;
   border-bottom: 2px solid transparent;
   border-radius: 10px 10px 0 0;
+  position: relative;
 
   &.back {
     height: 92px;
@@ -65,7 +66,6 @@
   .thumbWrapper {
     position: relative;
     overflow: hidden;
-    border-radius: 10px 10px 0 0;
   }
   .thumb {
     background-size: cover !important;
@@ -88,6 +88,15 @@
   font-family: "ALK Sanet", sans-serif;
 }
 
+.smallContainer {
+  display: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.smallContainer::-webkit-scrollbar {
+  display: none;
+}
 
 .stickyNav .nav-link {
   display: block;
@@ -113,20 +122,44 @@
     display: none !important;
   }
 }
+
+
 @media screen and (max-width: 768px) {
   .product {
     &:hover {
-      box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
       .thumb {
         transform: unset;
       }
     }
+
+    &:active{
+      box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
+      transform: scale(1);
+    }
+
   }
   .stickyNav {
     margin: 0 -15px;
   }
   .cats {
-    padding: 0 15px;
+    padding: 0;
+  }
+  .smallContainer {
+    width: 100%;
+    overflow-x: scroll;
+    display: flex;
+    padding: 10px 0;
+  }
+  .mobileElement {
+    white-space: nowrap;
+    display: inline;
+    margin: 0 5px;
+    padding: 5px 15px;
+  }
+  .mobileSelect {
+    background: $brand;
+    color:#fff;
+    border-radius: 24px;
   }
   .inOrder .product {
     border-bottom: none;
@@ -141,12 +174,12 @@
 
   .product {
     border-left: 0;
-    border-radius: 10px;
+    border-radius: 24px;
     .thumb {
       background-size: cover !important;
       background-position: center !important;
       background-repeat: no-repeat !important;
-      border-radius: 10px 10px 0 0;
+      border-radius: 24px 24px 0 0;
       box-shadow: unset;
       width: 100%;
       height: 120px;
@@ -168,16 +201,22 @@
   }
   .toggleMobile {
     display: block;
-    composes: brand-bg from global;
-    color: #fff;
+    background: #FFF;
+    color: $brand;
     float: right;
     border-radius: 0;
     padding: 10px 15px !important;
     border-top: 0 !important;
     bottom: 0;
-    position: fixed;
-    width: 100%;
+    position: sticky;
+    width: calc(100% + 8px);
     left: 0;
+    margin: 0 -3px;
+    box-shadow: 4px -3px 8px 1px #ddd;
+  }
+
+  .toggleMobile.hidden {
+    bottom: -60px;
   }
 
   .orderList {
@@ -231,7 +270,7 @@
   margin: 0 0 10px;
   border-bottom: 2px solid #f2f2f2;
   position: sticky;
-  top: 80px;
+  top: 55px;
   z-index: 20;
   background: #fff;
   overflow-x: auto;
@@ -257,9 +296,8 @@
   height: 100%;
   width: 100%;
   background: #fff;
-  border-top: 2px solid #ad3333;
   box-shadow: 0 0 2px #333;
-  z-index: 1100;
+  z-index: 1000;
   border-radius: 0;
 
   .btns {
@@ -314,8 +352,11 @@
   .flickity-button {
     display: none;
   }
-}
 
+  .stickyNav {
+    top: 66px;
+  }
+}
 
 
 .menuItem {
@@ -343,16 +384,14 @@
 }
 
 .mobileProductHeader {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
   .content {
     width: 100%;
     padding: 10px;
-    line-height: 14px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     max-height: 100px;
+    text-align: center;
+    line-height: 18px;
   }
   .productPrice {
     width: 100%;
@@ -390,6 +429,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: ease-in-out all 500ms;
 }
 .totalNumber {
   font-size: 20px;
@@ -466,7 +506,7 @@
 .menu-bgWrapper {
   display: flex;
   justify-content: center;
-  min-height: 160px;
+  min-height: 150px;
 }
 .menu-bg {
   background: url("../../assets/images/spinner/bg.png") no-repeat;
@@ -500,6 +540,59 @@
   }
 }
 @media screen and (max-width: 768px) {
+  .order.hide {
+    display: unset;
+    opacity: 0;
+    & .total, & .btns {
+      opacity: 0;
+    }
+    & .cart {
+      opacity: 0;
+      height: 0 !important;
+    }
+  }
+
+  .mobileProductHeader {
+    min-height: 100px;
+    .content {
+      height: 53px;
+      overflow: hidden;
+      padding: 0 10px;
+    }
+    .productPrice {
+      background: #eee;
+      border-radius: 14px;
+      width: calc(100% - 24px);
+      margin-left: 12px;
+      text-align: center;
+      padding: 10px 12px;
+      font-weight: 500;
+      bottom: 12px;
+      position: absolute;
+    }
+    .price {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      width: calc(100% - 24px);
+      margin-left: 12px;
+      bottom: 12px;
+      position: absolute;
+      justify-content: space-between;
+      & .baba {
+        background: #eee;
+        font-size: 17px;
+        padding: 10px 17px;
+        border-radius: 12px;
+        transition: ease-in-out all 50ms;
+        &:active{
+          box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
+          transform: scale(0.990);
+        }
+      }
+    }
+  }
+
   .mobileClose {
     background: $brand;
     color: #fff;

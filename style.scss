@@ -34,6 +34,16 @@ html,body {
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'BPG Nino Mtavruli Bold';
+    src: url('./assets/fonts/bpg-nino-mtavruli-bold-webfont.eot'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/bpg-nino-mtavruli-bold-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('./assets/fonts/bpg-nino-mtavruli-bold-webfont.woff2') format('woff2'), /* Super Modern Browsers */
+    url('./assets/fonts/bpg-nino-mtavruli-bold-webfont.woff') format('woff'), /* Pretty Modern Browsers */
+    url('./assets/fonts/bpg-nino-mtavruli-bold-webfont.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('./assets/fonts/bpg-nino-mtavruli-bold-webfont.svg#bpg_nino_mtavrulibold') format('svg'); /* Legacy iOS */
+}
+
 gel { font-family: "gel",sans-serif;}
 gel:before { content: 'a' }
 .gel { font-family: "gel",sans-serif;}
@@ -44,3 +54,5 @@ a {
 a:hover {
   color: $secondary
 }
+
+

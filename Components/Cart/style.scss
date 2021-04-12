@@ -1,6 +1,5 @@
 @import "../../Configs/css/_variables.scss";
 
-
 .orderPrice {
   flex: 0 1 10%;
   font-size: 17px;
@@ -8,6 +7,7 @@
 
 .orderCount {
   flex: 0 1 30%;
+  align-self: center;
 }
 
 
@@ -53,7 +53,10 @@
 }
 .orderList {
   display: flex;
-  padding: 3px 6px;
+  padding: 4px 6px;
+}
+.orderList:nth-child(even) {
+  background: #ececec;
 }
 .orderList:hover {
   background: #fff;
@@ -61,16 +64,22 @@
 }
 .orderImg {
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   margin-right: 5px;
+  border: 3px solid #f5f5f5;
+  box-shadow: 0 0 1px 1px #ddd;
 }
 .orderTitle {
   max-width: 100%;
   overflow: hidden;
   flex: 1 1 60%;
   font-size: 16px;
-  font-family: "Roboto",  "ALK Sanet",  sans-serif;
+  line-height: 17px;
+  font-family: "Roboto", "BPG Nino Mtavruli Bold", sans-serif;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .orderCount {
@@ -92,9 +101,53 @@
   font-size: 14px;
 }
 
+.desktop {
+
+}
+.mobile {
+  display: none;
+}
 
 @media screen and (max-width: 768px) {
+  .orderImg {
+    height: 40px;
+    width: 40px;
+    margin-right: 15px;
+  }
+  .orders {
+    height: calc(100% - 67px);
+    padding: 0;
+  }
+  .orders li:first-child {
+    padding-bottom: 0;
+    padding-top: 0;
+    top: 0;
+    display: none;
+  }
+  li.cartHeader {
+    display: none;
+  }
   .trash {
     display: none;
+  }
+  .desktop {
+    display: none;
+  }
+  .mobile {
+    display: flex;
+    &.orderList {
+      background: #fff;
+      border-top: 1px solid #eee;
+      border-bottom: none;
+      margin: 0;
+      padding: 12px;
+      &:last-child {
+        border-bottom: 1px solid #eee;
+      }
+      & .orderTitle {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   }
 }

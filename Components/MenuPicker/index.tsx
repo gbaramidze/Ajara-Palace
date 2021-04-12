@@ -1,17 +1,16 @@
 import * as React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {Col, Row} from "react-bootstrap";
-import {faChevronRight, faShoppingCart, faTimes, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faChevronRight, faHome, faShoppingCart, faTimes, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import CountUp from 'react-countup';
 import Button from "react-bootstrap/Button";
 import LazyLoad from 'react-lazyload';
 import {ReactNode} from "react";
 import {useHistory} from "react-router-dom"
-import Flickity from "react-flickity-component";
 
-import "flickity/css/flickity.css";
 import Cart from "../Cart";
+import Carousel from "../Carousel";
 
 const style = require("./style.scss");
 
@@ -45,13 +44,12 @@ const MenuPicker = ({data}) => {
 
   const initialState = {
     selectedCategory: 0,
-    showMobile: false,
     unScroll: false,
   };
   const history = useHistory();
+  const {language, order, locale, showMobile} = useSelector(state => state);
+
   const [state, setState] = React.useState(initialState);
-  const [Slider, setSlider] = React.useState(null);
-  const [selectedName, setSelectedName] = React.useState(null);
   const [lastEdit, setLastEdit] = React.useState(null);
   const [price, setPrice] = React.useState({
     oldPrice: 0,
@@ -59,16 +57,10 @@ const MenuPicker = ({data}) => {
   });
   const [cartSize, setCartSize] = React.useState(0);
 
-  const {language, order, locale} = useSelector(state => state);
   const dispatch = useDispatch();
-  const {showMobile} = state;
   const {oldPrice, newPrice} = price;
   const ordersRef = React.useRef<HTMLUListElement>();
   const highlightRef = React.useRef<HTMLDivElement>();
-
-  const setSelect = (id) => {
-    Slider.select(id);
-  };
 
 
   const kitchen = (): any[] => {
@@ -80,13 +72,10 @@ const MenuPicker = ({data}) => {
   };
 
 
-
   const categories = [
     "კერძები",
     "სასმელები"
   ];
-
-
 
   const handleScroll = () => {
     if (delay) clearTimeout(delay);
@@ -119,21 +108,25 @@ const MenuPicker = ({data}) => {
     return ret
   };
 
-  const onChangeOrder = (id) => {
+  const onChangeOrder = () => {
     grandTotal();
   };
 
   React.useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
+    if(window.outerWidth > 768) {
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+      return () => window.removeEventListener('scroll', handleScroll)
+    }
+
     if(order) {
       grandTotal()
     }
-    return () => window.removeEventListener('scroll', handleScroll)
+
   }, [order]);
 
   React.useEffect(() => {
-    if (lastEdit && ordersRef && highlightRef) {
+    if (lastEdit && ordersRef && highlightRef && window.outerWidth > 768) {
       ordersRef.current.scrollTop = highlightRef.current.offsetTop - 100;
       setTimeout(()=> {
         setLastEdit(null)
@@ -172,18 +165,10 @@ const MenuPicker = ({data}) => {
     },1000)
   };
 
-  const goto = (e): void => {
-    const elem = document.querySelector(`#${encodeURI(e.target.value)}`);
-    setSelectedName(e.target.value);
-    startScroll(elem)
-  };
 
-  const slideTo = (name: string, e, index: number) => {
+  const slideTo = (name: string) => {
     const encodedName = catName(name);
     const elem = document.querySelector(`#${encodedName}`);
-    e.preventDefault();
-    setSelectedName(name);
-    setSelect(index);
     startScroll(elem)
   };
 
@@ -202,21 +187,11 @@ const MenuPicker = ({data}) => {
   };
 
 
-  const foptions = {
-    freeScroll: true,
-    contain: true,
-    pageDots: false
-  };
-
   const response = {
     [categories[0]]: kitchen(),
     [categories[1]]: bar()
   };
 
-
-  const initSlider = slider => {
-    if(!Slider) { setSlider(slider) }
-  };
 
   const renderCategories = () => {
     const data = [];
@@ -240,15 +215,6 @@ const MenuPicker = ({data}) => {
     return data
   };
 
-  React.useEffect(() => {
-    if(Slider) {
-      Slider.on("change", (id) => {
-        const c = document.querySelectorAll(`.MenuList .menuItem`)[id];
-        startScroll(c)
-      });
-    }
-  }, [Slider]);
-
   const getCount = (id: number) => {
     let count = 1;
     if (order) {
@@ -259,6 +225,12 @@ const MenuPicker = ({data}) => {
       })
     }
     return count;
+  };
+
+  const TileClick = (meal: Meal) => {
+    if(window.outerWidth > 768) {
+      setOrder(meal)
+    }
   };
 
   const setOrder = (meal: Meal, type: string = 'increase', callBack = 0) => {
@@ -296,12 +268,15 @@ const MenuPicker = ({data}) => {
   };
 
   const toggleMobile = () => {
-    if(!state.showMobile) {
-      setState({...state, showMobile: true})
-    } else {
-      setState({...state, showMobile: false})
-    }
+    dispatch({
+      type: 'showMobile',
+      payload: !showMobile
+    })
   };
+
+  React.useEffect(() => {
+    document.body.style.overflow = showMobile ? "hidden" : "unset";
+  }, [showMobile]);
 
   const buttonProps = {
     disabled: false,
@@ -311,6 +286,7 @@ const MenuPicker = ({data}) => {
       window.scrollTo({
         top: 0
       });
+      document.body.style.overflow = 'unset';
       history.push(`/${language}/checkout`);
     }
   };
@@ -319,6 +295,8 @@ const MenuPicker = ({data}) => {
     buttonProps.disabled = true;
   }
 
+  const items = renderCategories();
+
   return (
     <>
       {
@@ -326,41 +304,11 @@ const MenuPicker = ({data}) => {
           <>
             <div className={style.stickyNav}>
               <div className={`${style.cats} mr-auto `}>
-                <select value={selectedName ? selectedName : catName(kitchen()[0]['name_en'])} onChange={(e) => {
-                  goto(e)
-                }} className={style.mobileNav}>
-                  {
-                    kitchen().map(item => {
-                      const name = language === 'ka' ? item.name : item[`name_${language}`] || item.name;
-                      return <option value={catName(item.name_en)} key={item.id}>{name}</option>
-                    })
-                  }
-                  {
-                    bar().map(item => {
-                      const name = language === 'ka' ? item.name : item[`name_${language}`] || item.name;
-                      return <option value={catName(item.name_en)} key={item.id}>{name}</option>
-                    })
-                  }
-                </select>
-                <Flickity options={foptions} className={"slider"} flickityRef={initSlider}>
-                    {
-                      renderCategories().map(({name, itemName}, index) => (
-                        <div
-                            key={`cat-${name}`}
-                            className={`${style.navElement}`}
-                            onClick={(e) => slideTo(name, e, index)}
-                        >
-                            {
-                              itemName.trim()
-                            }
-                          </div>
-                      ))
-                    }
-                  </Flickity>
+                <Carousel items={items} goto={slideTo}/>
               </div>
             </div>
 
-            <Row>
+            <Row style={{marginBottom: 0}}>
               <Col lg={9} xs={12}>
                 <div className={style.MenuList}>
                   {categories.map((category, indexs) =>
@@ -379,32 +327,42 @@ const MenuPicker = ({data}) => {
                                     const count = countOrder(item.id);
                                     const name = language === 'ka' ? item.name : item[`name_${language}`] || item.name;
                                     return <Col sm={4} xs={6} lg={3} key={`col-${item.id}`}
-                                                onClick={() => setOrder(item)}
-                                                className={`${inOrder(item.id) ? style.inOrder : ''} ${style.productItem}`}>
+                                                onClick={() => TileClick(item)}
+                                                className={style.productItem}>
                                       <div
                                         className={style.product}>
-                                        <header className={style.productHeader}>
-                                          <div className={style.content}>
-                                            {name.trim()}
-                                          </div>
-                                          <div className={style.productPrice}>
-                                            {count > 0 && (
-                                              <span>{count} x </span>)}{item.price} <span className="gel">a</span>
-                                          </div>
-                                        </header>
                                         <div className={style.thumbWrapper}>
                                           <LazyLoad height={140} debounce={100} placeholder={getSpinner()}>
-                                            <div className={style.thumb} location={`/domains/ajarapalace.ge/public_html/admin/uploads/items/${item.hash}`} style={{background: `url(${item.thumb}&h=220)`}}/>
+                                            <div className={style.thumb} style={{background: `url(${item.thumb}&h=220)`}}/>
                                           </LazyLoad>
                                         </div>
                                         <header className={style.mobileProductHeader}>
                                           <div className={style.content}>
                                             {name.trim()}
                                           </div>
-                                          <div className={style.productPrice}>
-                                            {count > 0 && (
-                                              <span>{count} x </span>)}{item.price} <span className="gel">a</span>
-                                          </div>
+                                          {
+                                            window.outerWidth > 768 ? (
+                                              <div className={style.productPrice}>
+                                                {count > 0 && (
+                                                  <span>{count} x </span>)}{item.price} <span className="gel">a</span>
+                                              </div>
+                                            ) : !inOrder(item.id) ? (
+                                              <div className={style.productPrice} onClick={() => setOrder(item)}>
+                                                {count > 0 && (
+                                                  <span>{count} x </span>)}{item.price} <span className="gel">a</span>
+                                              </div>
+                                            ) : (
+                                            <div className={style.price}>
+                                              <div className={style.baba} onClick={() => setOrder(item,"decrease")}>
+                                              -
+                                              </div>
+                                             <span>{count}</span>
+                                              <div className={style.baba} onClick={() => setOrder(item)}>
+                                              +
+                                              </div>
+                                            </div>
+                                            )
+                                          }
                                         </header>
                                       </div>
                                     </Col>
@@ -423,17 +381,13 @@ const MenuPicker = ({data}) => {
               <Col lg={3} xs={12}>
                 <div className={`${style.order} ${showMobile ? style.open : style.hide}`}>
                   <div className={style.cart} style={{height: `${cartSize}px`}}>
-                    <div className={style.mobileClose} onClick={toggleMobile}>
-                      <FontAwesomeIcon icon={faTimes}/>
-                    </div>
                     <Cart
+                      toggleMobile={toggleMobile}
                       ordersRef={ordersRef}
                       highlightRef={highlightRef}
                       onChangeOrder={onChangeOrder}
                       lastEdit={lastEdit}
                     />
-
-
                   </div>
 
                   <div className={style.total}>
@@ -474,28 +428,26 @@ const MenuPicker = ({data}) => {
                 </div>
               </Col>
 
-              <Col xs={12}>
-                <div className={`${style.toggleMobile} ${style.total}`}
-                     onClick={toggleMobile}>
-                  <div className={style.totalMessage}>
-                    <FontAwesomeIcon icon={faShoppingCart}/>
-                  </div>
-
-                  <div>
-                    <CountUp
-                      start={oldPrice}
-                      end={newPrice}
-                      duration={2.75}
-                      separator=" "
-                      decimals={2}
-                      decimal=","
-                      className={style.totalNumber}
-                    />
-                    <span className="gel"> a</span>
-                  </div>
-                  <FontAwesomeIcon icon={faChevronRight}/>
+              <div className={`${style.toggleMobile} ${style.total} ${!order.length ? style.hidden : ''}`}
+                   onClick={toggleMobile}>
+                <div className={style.totalMessage}>
+                  <FontAwesomeIcon icon={faShoppingCart}/>
                 </div>
-              </Col>
+
+                <div>
+                  <CountUp
+                    start={oldPrice}
+                    end={newPrice}
+                    duration={2.75}
+                    separator=" "
+                    decimals={2}
+                    decimal=","
+                    className={style.totalNumber}
+                  />
+                  <span className="gel"> a</span>
+                </div>
+                <FontAwesomeIcon icon={faChevronRight}/>
+              </div>
             </Row>
           </>
         )

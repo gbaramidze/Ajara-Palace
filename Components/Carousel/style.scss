@@ -1,0 +1,55 @@
+@import "../../Configs/css/_variables.scss";
+
+.carousel {
+  background: #FFF;
+  padding: 0 36px;
+  position: relative;
+}
+.image-slider-track {
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+.image-slider {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0ms ease-in-out 0s;
+  width: 1778px;
+
+}
+.slide {
+  color: #333;
+  cursor: pointer;
+  padding: 6px 12px;
+  user-select: none;
+  &.is-selected {
+    background: $brand;
+    color:#fff;
+    border-radius: 7px;
+  }
+}
+.tns-inner {
+  margin: -18px -15px 0px 0px !important
+}
+.controls {
+  position: relative;
+  width: 100%;
+}
+.control {
+  padding: 17px 6px;
+  cursor: pointer;
+  background: #fff;
+  position: absolute;
+}
+.left {
+  left: -36px;
+  z-index: 2232;
+}
+.right {
+  right: -36px;
+}

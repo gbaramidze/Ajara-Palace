@@ -9,6 +9,9 @@ import PaymentRadio from "../../Components/PaymentRadio";
 import {useHistory} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import IsClose from "../../Components/IsClose";
+import MobileNavigation from "../../Components/MobileNavigation";
+import * as Feather from "react-feather";
+const Pos = require("../../assets/images/pos.png");
 const style = require("./style.scss");
 
 
@@ -137,6 +140,12 @@ const CheckOut = () => {
         <meta httpEquiv="content-language" content={language} />
         <title>Checkout</title>
       </Helmet>
+      <MobileNavigation
+        left={(<Feather.ArrowLeft size={24} onClick={() => history.push(`/${language}/`)}/>)}
+        center={locale.CHECKOUT.TITLE}
+        right={(<>{null}</>)}
+      />
+
       <div className={style.page}>
         {
           isOrdering ? (
@@ -163,7 +172,6 @@ const CheckOut = () => {
                   </div>
                 </Col>
                 <Col xs={12} lg={8}>
-                  <h2>{locale.CHECKOUT.TITLE}</h2>
                   <div className={style.checkoutForm}>
                     <Form>
                       <Form.Group>
@@ -237,19 +245,23 @@ const CheckOut = () => {
                         <PaymentRadio
                           options={[
                             {
-                              icon: faMoneyBill,
-                              label: locale.CHECKOUT.PAYMENT_CASH
+                              icon: faCreditCard,
+                              label: locale.CHECKOUT.PAYMENT_CARD
                             },
                             {
-                              icon: faCreditCard,
-                              label: locale.CHECKOUT.PAYMENT_CARD,
-                              disabled: locale.CHECKOUT.PAYMENT_DISABLED
-                            },
+                              icon: faMoneyBill,
+                              label: locale.CHECKOUT.PAYMENT_CASH
+                            }
                           ]}
                           selected={paymentType}
                           onChange={handleChangeRadio}
                         />
                       </Form.Group>
+                      {
+                        paymentType === 0 && (
+                          <span className={style.posPayment}><img src={Pos} width={123}/> <span dangerouslySetInnerHTML={{__html: locale.CHECKOUT.PAYMENT_AFTER_DELIVERY}} /></span>
+                        )
+                      }
                       <hr />
                       {
                         !isError && (

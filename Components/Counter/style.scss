@@ -1,19 +1,22 @@
 @media screen and (min-width: 768px) {
   .counterWrapper {
     position: relative;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #ddd;
     .counter {
       display: flex;
       flex-direction: row;
       z-index: 10;
       justify-content: center;
       .count {
-        color: #888;
+        color: #666;
       }
       .btn {
         display: none;
       }
       &:hover {
-        margin-top: -7px;
+        margin-top: -2px;
 
         .btn {
           display: block;
@@ -21,6 +24,8 @@
           background: none;
           border: none;
           position: absolute;
+          margin: 0 -4px;
+          color: #4c4c4c;
           &:focus {
             box-shadow: none !important;
           }
@@ -28,10 +33,14 @@
         button:first-child {
           left: -22px;
           height: 30px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
         }
         button:last-child {
           right: -22px;
           height: 30px;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
         }
         .count {
           display: flex;
@@ -56,15 +65,30 @@
   .counter {
     display: flex;
     .count {
-      background: #eaebec;
+      background: #ddd;
       display: flex;
       font-size: 20px;
       justify-content: center;
       align-items: center;
       padding: 0 5px;
       color: #666;
-      border: 1px solid #ddd;
       width: 100%;
+      border-right: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+    }
+    button:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      background: #dddddd;
+      border: none;
+    }
+    button:last-child {
+      border-top-left-radius: 0;
+      background: #dddddd;
+      border-bottom-left-radius: 0;
+      border: none;
     }
   }
+
+
 }
